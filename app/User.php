@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
+use Illuminate\Support\Facades\DB;
 class User extends Authenticatable
 {
     use Notifiable;
@@ -24,14 +24,16 @@ class User extends Authenticatable
 
     public  static  function add($data){
         foreach ($data as $dat){
-            $user = new User;
-            $user->name = $dat['name'];
-            $user->ic_number = $dat['ic_number'];
-            $user->zakat_type= $dat['zakat_type'];
-            $user->deduct_amt= $dat['deduct_amt']/100;
-            $user->district_code= $dat['district_code'];
-            $user->save();
+            DB::table('users')->insert([
+                'name' => $dat['name'],
+                'ic_number' => $dat['ic_number']
+            ]);
+            DB::table('user_type_district')->insert([
+                'ic_number' => $dat['ic_number'],
+                'deduct_amt' => $dat['deduct_amt']/100,
+                'zakat_type' => $dat['zakat_type'],
+                'district_code' => $dat['district_code']
+            ]);
         }
-
     }
 }

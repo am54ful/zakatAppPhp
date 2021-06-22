@@ -20,7 +20,8 @@
             <h2 class="text-center text-white ">Zakat Pahang Data Entry</h2>
             <input id="file" type="file" accept=".txt" style="display:none;" />
             <div class="d-grid gap-1 col-1 mx-auto">
-                <input type="button" value="Upload" class="btn btn-warning " onclick="document.getElementById('file').click();" />
+                <input type="button" value="Upload Data" class="btn btn-warning " onclick="document.getElementById('file').click();" />
+                <input type="button" value="View Report" class="btn btn-light" onclick="location.replace('/user/report')" />
             </div>
             <div id="progress" class="d-grid gap-1 col-3 mx-auto pt-3 hide-me">
                 <p class="text-center text-white fs-4">Please wait</p>
@@ -43,7 +44,6 @@
                     <table class="table table-striped table-hover">
                         <thead>
                             <tr>
-                                <td scope="col">ID</td>
                                 <td scope="col">IC Number</td>
                                 <td scope="col">Name</td>
                                 <td scope="col">Zakat Type</td>
@@ -53,12 +53,11 @@
                         </thead>
                         @foreach($users as $user)
                         <tr>
-                            <td>{{ $user->id }}</td>
                             <td>{{ $user->ic_number }}</td>
                             <td>{{ $user->name }}</td>
-                            <td>{{ sprintf("%02d", $user->zakat_type) }} - {{ array_search(sprintf("%02d", $user->zakat_type),$zakatType) }}</td>
+                            <td>{{ sprintf("%02d",$user->zakat_type) }}  - {{ $user->zakat_name }}</td>
                             <td class="float-end ">{{ number_format($user->deduct_amt,2) }}</td>
-                            <td>{{ sprintf("%02d", $user->district_code) }} - {{ array_search(sprintf("%02d", $user->district_code),$dist_code) }}</td>
+                            <td>{{ sprintf("%02d",$user->district_code) }}  - {{ $user->district_name }}</td>
                         </tr>
                         @endforeach
                     </table>
@@ -111,7 +110,7 @@
             processData: false,
             success: function (data, textStatus, request) {
                 if (request.status === 200) {
-                    location.reload();
+                    location.replace('/')
                 }
             },
             error: function (e) {
